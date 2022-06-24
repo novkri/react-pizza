@@ -1,12 +1,14 @@
 import React from "react";
+import styles from "./NotFoundBlock.module.scss";
 
 const NotFoundBlock = () => {
   return (
-    <div>
+    <h1 className={styles.root}>
       <span> :(</span>
       <br />
-      <h1>Nothing found</h1>
-    </div>
+      Nothing found
+      <p className={styles.description}>Some desscription</p>
+    </h1>
   );
 };
 
