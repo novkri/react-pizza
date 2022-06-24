@@ -3,7 +3,9 @@ interface PizzaBlockProps {
     title: string
     price: number
 }
-function PizzaBlock(props: PizzaBlockProps) {
+function PizzaBlock({title, price}: PizzaBlockProps) {
+    const [count, setCount] = React.useState(0)
+
     return (
         <div className="pizza-block">
             <img
@@ -11,7 +13,7 @@ function PizzaBlock(props: PizzaBlockProps) {
                 src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
                 alt="Pizza"
             />
-            <h4 className="pizza-block__title">{props.title}</h4>
+            <h4 className="pizza-block__title">{title}</h4>
             <div className="pizza-block__selector">
                 <ul>
                     <li className="active">тонкое</li>
@@ -25,8 +27,8 @@ function PizzaBlock(props: PizzaBlockProps) {
                 </ul>
             </div>
             <div className="pizza-block__bottom">
-                <div className="pizza-block__price">от {props.price} ₽</div>
-                <div className="button button--outline button--add">
+                <div className="pizza-block__price">от {price} ₽</div>
+                <button className="button button--outline button--add" onClick={() => setCount(count + 1 )}>
                     <svg
                         width="12"
                         height="12"
@@ -40,8 +42,8 @@ function PizzaBlock(props: PizzaBlockProps) {
                         />
                     </svg>
                     <span>Добавить</span>
-                    <i>2</i>
-                </div>
+                    <i>{count}</i>
+                </button>
             </div>
         </div>
     )
