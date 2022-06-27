@@ -6,6 +6,11 @@
   text-align: center;
   margin-bottom: 65px;
 
+  &-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
   &:not(:nth-of-type(4n)) {
     margin-right: 35px;
   }
