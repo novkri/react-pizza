@@ -12,15 +12,13 @@ function App() {
       <Header />
 
       <div className="content">
-        <div className="container">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/*" element={<NotFound />} />
-            {/* todo what is index  */}
-            {/* <Route index element={<Home />} /> */}
-          </Routes>
-        </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/*" element={<NotFound />} />
+        {/* todo what is index  */}
+        {/* <Route index element={<Home />} /> */}
+      </Routes>
       </div>
     </div>
   );
