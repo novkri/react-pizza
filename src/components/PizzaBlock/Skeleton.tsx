@@ -1,18 +1,7 @@
 import React from "react";
 import ContentLoader from "react-content-loader";
 
-interface PizzaBlockProps {
-  id: number;
-  imageUrl: string;
-  name: string;
-  types: number[];
-  sizes: number[];
-  price: number;
-  category: number;
-  rating: number;
-}
-
-const Skeleton = (props: PizzaBlockProps) => {
+const Skeleton = (props: any) => {
   return (
     <ContentLoader
       className="pizza-block"

@@ -1,15 +1,6 @@
 import React from "react";
+import PizzaBlockProps from "../../interfaces/PizzaBlock";
 
-interface PizzaBlockProps {
-    id: number
-    imageUrl: string
-    name: string
-    types: number[]
-    sizes: number[]
-    price: number
-    category: number
-    rating: number
-}
 
 function PizzaBlock({imageUrl, name, types, sizes, price, category, rating}: PizzaBlockProps) {
     const [activeSize, setActiveSize] = React.useState(0)

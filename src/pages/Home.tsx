@@ -4,9 +4,10 @@ import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock/index";
 import Skeleton from "../components/PizzaBlock/Skeleton";
+import PizzaBlockProps from "../interfaces/PizzaBlock";
 
 export const Home = () => {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<PizzaBlockProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   React.useEffect(() => {
