@@ -1,27 +1,43 @@
-import React from "react";
+import React, {useCallback, useRef, useState} from "react";
 import styles from "./Search.module.scss";
 import { useSearchContext } from "../../App";
+import debounce from 'lodash.debounce'
 
 const Search = () => {
   const { searchValue, setSearchValue } = useSearchContext()
+  const [ value, setValue ] = useState('')
+  const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
 
-  const foo = (ev: any) => {
-    console.log(ev.target.value);
-    console.log(searchValue);
-    setSearchValue(ev.target.value);
-  };
+  const onClickClear = () => {
+    setSearchValue('')
+    inputRef.current.focus()
+  }
+
+  const updateSearchValue = useCallback(
+      debounce((str) => {
+        console.log(1)
+        setSearchValue(str)
+      }, 250), []
+  )
+
+  const onChangeInput = (ev: { target: { value: any; }; }) => {
+    setValue(ev.target.value)
+    updateSearchValue(ev.target.value)
+  }
+
   return (
     <div className={styles.root}>
       <input
+        ref={inputRef}
         className={styles.input}
         type="text"
         placeholder="Поиск пиццы ..."
-        value={searchValue}
-        onChange={foo}
+        value={value}
+        onChange={onChangeInput}
       />
-      {searchValue && (
+      {value && (
         <svg
-          onClick={() => setSearchValue("")}
+          onClick={onClickClear}
           className={styles.close}
           viewBox="0 0 32 32"
           xmlns="http://www.w3.org/2000/svg"

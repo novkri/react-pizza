@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import axios from "axios";
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock/index";
@@ -8,21 +8,24 @@ import PizzaBlockProps from "../interfaces/PizzaBlock";
 import Pagination from "../components/Pagination";
 import {useSearchContext} from "../App";
 import {useDispatch, useSelector} from "react-redux";
-import {setCategoryId} from "../redux/slices/filterSlice";
+import {setCategoryId, setCurrentPage} from "../redux/slices/filterSlice";
 
 
 export const Home = () => {
   const dispatch = useDispatch()
-  const {categoryId, sort: sortType} = useSelector((state: any) => state.filter)
+  const {categoryId, sort: sortType, currentPage} = useSelector((state: any) => state.filter)
 
   const { searchValue } = useSearchContext()
 
   const [items, setItems] = useState<PizzaBlockProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1)
 
   const onClickCategory = (id: number) => {
     dispatch(setCategoryId(id))
+  }
+
+  const onChangePage = (number: number) => {
+    dispatch(setCurrentPage(number))
   }
 
   React.useEffect(() => {
@@ -33,18 +36,12 @@ export const Home = () => {
     const sortBy = sortType.property.replace("-", "");
     const order = sortType.property.includes("-") ? "asc" : "desc";
 
-    fetch(
-      `https://62b57a56da3017eabb1b8e17.mockapi.io/Items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-    )
-      .then((res) => {
-        return res.json();
-      })
-      .then((arr) => {
-        setTimeout(() => {
-          setItems(arr);
-          setIsLoading(false);
-        }, 1000);
-      });
+    axios.get(`https://62b57a56da3017eabb1b8e17.mockapi.io/Items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`).then(res => {
+      // setTimeout(() => {
+      setItems(res.data);
+      setIsLoading(false);
+      // }, 1000);
+    })
     window.scrollTo(0, 0);
   }, [categoryId, sortType, searchValue, currentPage]);
 
@@ -78,7 +75,7 @@ export const Home = () => {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeletons : pizzas}</div>
-      <Pagination onChangePage={(number: number) => setCurrentPage(number)} />
+      <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </div>
   );
 };
