@@ -6,13 +6,13 @@ import PizzaBlock from "../components/PizzaBlock/index";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import PizzaBlockProps from "../interfaces/PizzaBlock";
 import Pagination from "../components/Pagination";
+import {useSearchContext} from "../App";
 
-interface HomeProps {
-  searchValue: string;
-  // setSearchValue: Function;
-}
 
-export const Home = ({ searchValue }: HomeProps) => {
+export const Home = () => {
+
+  const { searchValue } = useSearchContext()
+
   const [items, setItems] = useState<PizzaBlockProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 

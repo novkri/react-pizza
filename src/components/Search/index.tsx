@@ -1,12 +1,10 @@
-import React from "react";
+import React, {useContext} from "react";
 import styles from "./Search.module.scss";
+import { useSearchContext } from "../../App";
 
-interface SearchProps {
-  searchValue: string;
-  setSearchValue: Function;
-}
+const Search = ( ) => {
+  const { searchValue, setSearchValue } = useSearchContext()
 
-const Search = ({ searchValue, setSearchValue }: SearchProps) => {
   const foo = (ev: any) => {
     console.log(ev.target.value);
     console.log(searchValue);

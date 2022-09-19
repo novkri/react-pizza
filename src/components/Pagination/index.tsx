@@ -4,8 +4,6 @@ import ReactPaginate from "react-paginate";
 
 interface PaginationProps {
   onChangePage: Function
-// searchValue: string;
-// setSearchValue: Function;
 }
 const Pagination = ({ onChangePage }: PaginationProps) => {
 
