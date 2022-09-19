@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import Categories from "../components/Categories";
-import Sort from "../components/Sort";
+import Sort, {sortOptions} from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock/index";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import PizzaBlockProps from "../interfaces/PizzaBlock";
 import Pagination from "../components/Pagination";
 import {useSearchContext} from "../App";
 import {useDispatch, useSelector} from "react-redux";
-import {setCategoryId, setCurrentPage} from "../redux/slices/filterSlice";
+import {setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
+import qs from "qs";
+import {useNavigate} from "react-router-dom";
 
 
 export const Home = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const isSearch = useRef(false)
+  const isMounted = useRef(false)
   const {categoryId, sort: sortType, currentPage} = useSelector((state: any) => state.filter)
 
   const { searchValue } = useSearchContext()
@@ -28,7 +33,7 @@ export const Home = () => {
     dispatch(setCurrentPage(number))
   }
 
-  React.useEffect(() => {
+  const fetchPizzas = () => {
     setIsLoading(true);
 
     const category = categoryId > 0 ? `category=${categoryId}` : "";
@@ -42,27 +47,48 @@ export const Home = () => {
       setIsLoading(false);
       // }, 1000);
     })
+    // window.scrollTo(0, 0);
+  }
+
+  useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1))
+      const sort = sortOptions.find(i => i.property === params.sortProperty)
+      dispatch(setFilters({...params, sort}))
+      isSearch.current = true
+    }
+  }, [])
+
+  React.useEffect(() => {
     window.scrollTo(0, 0);
+    if (!isSearch.current) {
+      fetchPizzas()
+    }
+    isSearch.current = false
   }, [categoryId, sortType, searchValue, currentPage]);
+
+  useEffect(() => {
+    if (isMounted.current) {
+      const queryString = qs.stringify({
+        sortProperty: sortType.property,
+        categoryId,
+        currentPage
+      })
+
+      navigate(`?${queryString}`)
+    }
+    isMounted.current = true
+  }, [categoryId, sortType, currentPage])
 
   const pizzas = items
     .filter((item) =>
       item.name.toLowerCase().includes(searchValue.toLowerCase())
     )
     .map((item) => <PizzaBlock {...item} key={item.id} />);
+
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
   ));
-
-  //pagination
-  // Invoke when user click to request another page.
-  // const handlePageClick = (event) => {
-  //   const newOffset = (event.selected * itemsPerPage) % items.length;
-  //   console.log(
-  //     `User requested page number ${event.selected}, which is offset ${newOffset}`
-  //   );
-  //   setItemOffset(newOffset);
-  // };
 
   return (
     <div className="container">

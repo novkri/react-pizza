@@ -10,6 +10,7 @@
     "@types/react-router-dom": "5.3.3",
     "axios": "^0.27.2",
     "lodash.debounce": "^4.0.8",
+    "qs": "^6.11.0",
     "react": "^18.2.0",
     "react-content-loader": "6.2.0",
     "react-dom": "^18.2.0",
