@@ -6,8 +6,8 @@ const NotFoundBlock = () => {
     <h1 className={styles.root}>
       <span> :(</span>
       <br />
-      Nothing found
-      <p className={styles.description}>Some desscription</p>
+      Ничего не найдено
+      <p className={styles.description}>Попробуйте повторить запрос позже</p>
     </h1>
   );
 };

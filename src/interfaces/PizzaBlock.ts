@@ -1,5 +1,5 @@
 interface PizzaBlockProps {
-    id: number
+    id: string
     imageUrl: string
     name: string
     types: number[]
