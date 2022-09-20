@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {setSort} from "../redux/slices/filterSlice";
+import {selectSort, setSort} from "../redux/slices/filterSlice";
 
 export const sortOptions = [
   { name: "популярности (DESC)", property: "rating" },
@@ -13,7 +13,7 @@ export const sortOptions = [
 
 function Sort() {
   const dispatch = useDispatch()
-  const sort = useSelector((state: any) => state.filter.sort)
+  const sort = useSelector(selectSort)
   const sortRef = useRef() as React.MutableRefObject<HTMLInputElement>
 
   const [open, setOpen] = useState(false);

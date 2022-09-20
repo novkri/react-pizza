@@ -1,14 +1,14 @@
 import React from "react";
 import PizzaBlockProps from "../../interfaces/PizzaBlock";
 import {useDispatch, useSelector} from "react-redux";
-import {addItem} from "../../redux/slices/cartSlice";
+import {addItem, selectCartItemById} from "../../redux/slices/cartSlice";
 
 const typeNames = ['тонкое', 'традиционное']
 
 
 function PizzaBlock({id, imageUrl, name, types, sizes, price, category, rating}: PizzaBlockProps) {
     const dispatch = useDispatch()
-    const cartItem = useSelector((state: any) => state.cart.items.find((i: any) => i.id === id))
+    const cartItem = useSelector(selectCartItemById(id))
     const [activeSize, setActiveSize] = React.useState(0)
     const [activeType, setActiveType] = React.useState(types[0])
 

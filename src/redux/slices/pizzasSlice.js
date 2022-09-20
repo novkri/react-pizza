@@ -8,7 +8,7 @@ const initialState = {
 }
 
 export const fetchAllPizzas = createAsyncThunk('pizza/fetchPizzas',
-    async (params) => {
+    async (params, thunkAPI) => {
         const {
             sortBy,
             order,
@@ -45,6 +45,7 @@ export const pizzasSlice = createSlice({
     }
 })
 
+export const selectPizzas = state => state.pizza
 export const { setItems } = pizzasSlice.actions
 
 export default pizzasSlice.reducer
