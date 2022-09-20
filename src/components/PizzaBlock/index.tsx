@@ -2,6 +2,7 @@ import React from "react";
 import PizzaBlockProps from "../../interfaces/PizzaBlock";
 import {useDispatch, useSelector} from "react-redux";
 import {addItem, selectCartItemById} from "../../redux/slices/cartSlice";
+import {Link} from "react-router-dom";
 
 const typeNames = ['тонкое', 'традиционное']
 
@@ -30,20 +31,23 @@ function PizzaBlock({id, imageUrl, name, types, sizes, price, category, rating}:
     return (
         <div className="pizza-block-wrapper">
             <div className="pizza-block">
-                <img
-                    className="pizza-block__image"
-                    src={imageUrl}
-                    alt="Pizza"
-                />
-                <h4 className="pizza-block__title">{name}</h4>
-                <div className="pizza-block__selector">
-                    <ul>
-                        {typesList}
-                    </ul>
-                    <ul>
-                        {sizesList}
-                    </ul>
-                </div>
+                <Link to={`/pizza/${id}`}>
+                    <img
+                        className="pizza-block__image"
+                        src={imageUrl}
+                        alt="Pizza"
+                    />
+                    <h4 className="pizza-block__title">{name}</h4>
+                    <div className="pizza-block__selector">
+                        <ul>
+                            {typesList}
+                        </ul>
+                        <ul>
+                            {sizesList}
+                        </ul>
+                    </div>
+                </Link>
+
                 <div className="pizza-block__bottom">
                     <div className="pizza-block__price">от {price} ₽</div>
                     <button className="button button--outline button--add" onClick={onClickAdd} >
@@ -61,7 +65,6 @@ function PizzaBlock({id, imageUrl, name, types, sizes, price, category, rating}:
                         </svg>
                         <span>Добавить</span>
                         {cartItem &&  <i>{cartItem?.count}</i>}
-
                     </button>
                 </div>
             </div>

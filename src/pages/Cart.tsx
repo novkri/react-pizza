@@ -13,7 +13,6 @@ const Cart = () => {
 
   const totalCount = items.reduce((sum: number, item: ICartItem) => sum + item.count, 0)
 
-
   const onClickClear = () => {
     dispatch(clearItems())
   }
