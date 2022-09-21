@@ -411,3 +411,21 @@ body {
     }
   }
 }
+
+.pizza-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 500px;
+    height: 500px;
+  }
+  h2 {
+    margin: 5px 0;
+  }
+  button {
+    margin-top: 10px;
+  }
+}

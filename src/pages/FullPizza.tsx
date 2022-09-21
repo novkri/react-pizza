@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 
 const FullPizza = () => {
@@ -22,11 +22,21 @@ const FullPizza = () => {
     }, [])
 
     return (
-        <div className="container">
-            <img src={pizza?.imageUrl}  />
-            <h2>{pizza?.name}</h2>
-            {pizza && <h2>{pizza?.price} руб.</h2>}
-        </div>
+        <>
+            {pizza && <div className="container pizza-container">
+                <img src={pizza?.imageUrl} alt={'pizza'}/>
+                <h2>{pizza?.name}</h2>
+                <h2>{pizza?.price} руб.</h2>
+                <Link to={"/"}>
+                    <button className="button button--outline button--add">
+                        <span>Назад</span>
+                    </button>
+                </Link>
+
+            </div>}
+        {/*    todo loader */}
+        </>
+
     )
 }
 
