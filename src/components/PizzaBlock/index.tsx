@@ -1,29 +1,35 @@
 import React from "react";
-import PizzaBlockProps from "../../interfaces/PizzaBlock";
+
 import {useDispatch, useSelector} from "react-redux";
-import {addItem, selectCartItemById} from "../../redux/slices/cartSlice";
+import {addItem} from "../../redux/slices/cart/slice";
 import {Link} from "react-router-dom";
+import {selectCartItemById} from "../../redux/slices/cart/selectors";
+import {Pizza} from "../../redux/slices/pizzas/types";
+import ICartItem from "../../interfaces/ICartItem";
 
 const typeNames = ['тонкое', 'традиционное']
 
 
-function PizzaBlock({id, imageUrl, name, types, sizes, price, category, rating}: PizzaBlockProps) {
+function PizzaBlock({id, imageUrl, name, types, sizes, price}: Pizza) {
     const dispatch = useDispatch()
     const cartItem = useSelector(selectCartItemById(id))
     const [activeSize, setActiveSize] = React.useState(0)
     const [activeType, setActiveType] = React.useState(types[0])
 
     const sizesList = sizes.map((item, index) => <li key={item} className={activeSize === index ? 'active' : ''} onClick={() => setActiveSize(index)}>{item}</li>)
-    const typesList = types.map((item) => <li key={item} className={activeType === item ? 'active' : ''} onClick={() => setActiveType(item)}>{typeNames[item]}</li>)
+    // @ts-ignore
+    const typesList = types.map((item: string) => <li key={item} className={activeType === item ? 'active' : ''} onClick={() => setActiveType(item)}>{typeNames[item]}</li>)
 
     const onClickAdd = () => {
-        const item = {
+        const item: ICartItem = {
             id,
             name,
             price,
             imageUrl,
+            // @ts-ignore
             type: typeNames[activeType],
-            size: sizes[activeSize]
+            size: sizes[activeSize],
+            count: 0
         }
 
         dispatch(addItem(item))

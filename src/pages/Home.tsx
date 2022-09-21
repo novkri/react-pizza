@@ -3,14 +3,17 @@ import Categories from "../components/Categories";
 import Sort, {sortOptions} from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock/index";
 import Skeleton from "../components/PizzaBlock/Skeleton";
-import PizzaBlockProps from "../interfaces/PizzaBlock";
 import Pagination from "../components/Pagination";
 import {useDispatch, useSelector} from "react-redux";
-import {selectFilter, setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
+import { setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filter/slice";
 import qs from "qs";
 import {useNavigate} from "react-router-dom";
-import {fetchAllPizzas, selectPizzas} from "../redux/slices/pizzasSlice";
-import {LoadingStatus} from "../assets/enums";
+import {LoadingStatus} from "../assets/scripts/enums";
+import {selectFilter} from "../redux/slices/filter/selectors";
+import {selectPizzas} from "../redux/slices/pizzas/selectors";
+import ISort from "../interfaces/ISort";
+import {FilterSliceState} from "../redux/slices/filter/types";
+import {fetchAllPizzas} from "../redux/slices/pizzas/asyncActions";
 
 
 export const Home = () => {
@@ -32,8 +35,8 @@ export const Home = () => {
   const getPizzas = async  () => {
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     const search = searchValue ? `search=${searchValue}` : "";
-    const sortBy = sortType.property.replace("-", "");
-    const order = sortType.property.includes("-") ? "asc" : "desc";
+    const sortBy = sortType.sortProperty.replace("-", "");
+    const order = sortType.sortProperty.includes("-") ? "asc" : "desc";
 
     // @ts-ignore
     dispatch(fetchAllPizzas({
@@ -48,8 +51,8 @@ export const Home = () => {
   useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1))
-      const sort = sortOptions.find(i => i.property === params.sortProperty)
-      dispatch(setFilters({...params, sort}))
+      const sort = sortOptions.find(i => i.sortProperty === params.sortProperty) as ISort
+      dispatch(setFilters({...params, sort} as FilterSliceState))
       isSearch.current = true
     }
   }, [])
@@ -65,7 +68,7 @@ export const Home = () => {
   useEffect(() => {
     if (isMounted.current) {
       const queryString = qs.stringify({
-        sortProperty: sortType.property,
+        sortProperty: sortType.sortProperty,
         categoryId,
         currentPage
       })
@@ -75,11 +78,12 @@ export const Home = () => {
     isMounted.current = true
   }, [categoryId, sortType, currentPage])
 
+  console.log(items)
   const pizzas = items
-    .filter((item: PizzaBlockProps) =>
+    .filter((item) =>
       item.name.toLowerCase().includes(searchValue.toLowerCase())
     )
-      .map((item: PizzaBlockProps) => <PizzaBlock {...item} key={item.id} />);
+      .map((item) => <PizzaBlock {...item} key={item.id} />);
 
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />

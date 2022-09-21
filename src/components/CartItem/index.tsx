@@ -1,23 +1,16 @@
 import React from "react";
 import {useDispatch} from "react-redux";
-import {addItem, decreaseItem, removeItem} from "../../redux/slices/cartSlice";
+import {addItem, decreaseItem, removeItem} from "../../redux/slices/cart/slice";
 import clsx from "clsx";
+import ICartItem from "../../interfaces/ICartItem";
 
-interface CartItemProps {
-    id: string
-    count: number
-    imageUrl: string
-    name: string
-    price: number
-    type: string
-    size: number
-}
 
-const CartItem = ({id, name, price, count, imageUrl, type, size}: CartItemProps) => {
+
+const CartItem = ({id, name, price, count, imageUrl, type, size}: ICartItem) => {
     const dispatch = useDispatch()
 
     const onClickPlus = () => {
-        dispatch(addItem({id}))
+        dispatch(addItem({id} as ICartItem))
     }
     const onClickMinus = () => {
         dispatch(decreaseItem(id))

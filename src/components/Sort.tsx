@@ -1,30 +1,38 @@
 import React, {memo, useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {selectSort, setSort} from "../redux/slices/filterSlice";
+import { setSort} from "../redux/slices/filter/slice";
+import {  SortPropertyEnum} from '../redux/slices/filter/types'
+import ISort from "../interfaces/ISort";
 
 export const sortOptions = [
-  { name: "популярности (DESC)", property: "rating" },
-  { name: "популярности (ASC)", property: "-rating" },
-  { name: "цене (DESC)", property: "price" },
-  { name: "цене (ASC)", property: "-price" },
-  { name: "алфавиту (DESC)", property: "name" },
-  { name: "алфавиту (ASC)", property: "-name" },
+  { name: "популярности (DESC)", sortProperty: SortPropertyEnum.RATING_DESC },
+  { name: "популярности (ASC)", sortProperty: SortPropertyEnum.RATING_ASC },
+  { name: "цене (DESC)", sortProperty: SortPropertyEnum.PRICE_DESC },
+  { name: "цене (ASC)", sortProperty: SortPropertyEnum.PRICE_ASK },
+  { name: "алфавиту (DESC)", sortProperty: SortPropertyEnum.TITLE_DESC },
+  { name: "алфавиту (ASC)", sortProperty: SortPropertyEnum.TITLE_ASC },
 ];
 
 type SortProps = {
-  value: {
-    name: string,
-    property: string
-  }
+  value: ISort
 }
 
-const Sort = memo(({ value }: SortProps) => {
+type PopupClick = MouseEvent & {
+  path: Node[];
+};
+
+type SortItem = {
+  name: string;
+  sortProperty: SortPropertyEnum;
+};
+
+const Sort: React.FC<SortProps> = memo(({ value }) => {
   const dispatch = useDispatch()
   const sortRef = useRef() as React.MutableRefObject<HTMLInputElement>
 
   const [open, setOpen] = useState(false);
 
-  const setSorting = (obj: { name: string; property: string }) => {
+  const setSorting = (obj: SortItem) => {
     dispatch(setSort(obj))
     setOpen(false);
   };
@@ -66,9 +74,9 @@ const Sort = memo(({ value }: SortProps) => {
               <ul>
                 {sortOptions.map((option, idx) => (
                     <li
-                        className={value.property === option.property ? "active" : ""}
+                        className={value.sortProperty === option.sortProperty ? "active" : ""}
                         key={idx}
-                        onClick={() => setSorting(option)}
+                        onClick={() => setSorting(option as SortItem)}
                     >
                       {option.name}
                     </li>

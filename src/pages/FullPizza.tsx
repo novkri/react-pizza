@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
-import PizzaBlockProps from "../interfaces/PizzaBlock";
 
 const FullPizza = () => {
-    const [pizza, setPizza] = useState<PizzaBlockProps>()
+    const [pizza, setPizza] = useState<{
+        imageUrl: string;
+        name: string;
+        price: number;
+    }>()
     const { id } = useParams()
     const navigate = useNavigate()
 
